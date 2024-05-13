@@ -1,0 +1,52 @@
+// This problem can be solved by using greedy. So the optimal approach will be first traverse through rows and change the bits from 0-->1 from left to right because of msbs. Then traverse through cols and count the no of 1s in each cols. If the number of 1s are greater then just flip the bits of that col 
+
+// TC : O(n^2) n^2 for traversing
+// SC : O(1)
+
+
+class Solution {
+public:
+    int matrixScore(vector<vector<int>>& grid) 
+    {
+        int m=grid.size(); // m--> No of rows
+        int n=grid[0].size(); // n--> No of cols
+        
+        for(int i=0;i<m;i++)
+        {
+            if(grid[i][0]==0)
+            {   
+                for(int j=0;j<n;j++)
+                {
+                    grid[i][j]=abs(grid[i][j]-1); // Traversing from left to right and flipping bits
+                }
+            }
+        }
+        
+        // vector<int>ones(n,0);  // We can do this without using the ones vector
+        int ans=0;
+        for(int j=0;j<n;j++)
+        {
+            int cnt=0;
+            for(int i=0;i<m;i++)
+            {
+                if(grid[i][j]==1)  // Counting the no of ones and checking should I flip the bits or not
+                   cnt++; 
+            }
+            cnt=max(cnt, (m-cnt));
+            
+            // ones[j]=cnt;
+            
+            int x=pow(2,(n-j-1));  // Calculating final ans i.e (2^n-1...2^0)*no of ones in each col
+            ans+=cnt*x;
+        }
+        
+        // int ans=0;
+        // for(int i=0;i<n;i++)
+        // {
+        //     int x=pow(2,(n-i-1));
+        //     ans+=ones[i]*x;
+        // }
+        
+        return ans;
+    }
+};

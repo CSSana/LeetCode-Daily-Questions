@@ -1,0 +1,40 @@
+// Simple dfs+backtrack  TC : Exponential 4^max(i,j)  SC : Exponential 4^max(i,j)
+class Solution {
+public:
+    int rec(int i, int j, vector<vector<int>>&grid, int m, int n)
+    {
+        if(i>=m or i<0 or j>=n or j<0 or grid[i][j]==0)
+            return 0;
+        
+        int res=-1e9;
+        
+        int temp=grid[i][j]; // Backtracking step
+        grid[i][j]=0;
+        
+        res=max(res, rec(i+1,j,grid,m,n));
+        res=max(res, rec(i,j+1,grid,m,n));
+        res=max(res, rec(i-1,j,grid,m,n));
+        res=max(res, rec(i,j-1,grid,m,n));
+        
+        grid[i][j]=temp;  
+        
+        return res+temp;  // Current grid[i][j] which is stored in temp
+    }
+    int getMaximumGold(vector<vector<int>>& grid) 
+    {
+        int m=grid.size();
+        int n=grid[0].size();
+        
+        int ans=INT_MIN;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]!=0)  // Each non zero cell can be the starting point
+                    ans=max(ans, rec(i,j,grid,m,n));
+            }
+        }
+        
+        return (ans==INT_MIN)?0:ans;
+    }
+};

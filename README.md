@@ -1,2 +1,2 @@
 # LeetCode-Daily-Questions
-LeetCode daily question solutions
+This is the repo where I upload LeetCode daily question solutions

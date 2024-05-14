@@ -1,6 +1,6 @@
 // This problem can be solved by using greedy. So the optimal approach will be first traverse through rows and change the bits from 0-->1 from left to right because of msbs. Then traverse through cols and count the no of 1s in each cols. If the number of 1s are greater then just flip the bits of that col 
 
-// TC : O(n*m) n*m for traversing
+// TC : O(n*m) n*m for traversing the whole matrix
 // SC : O(1)
 
 

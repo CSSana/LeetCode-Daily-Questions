@@ -1,0 +1,157 @@
+class Solution {
+public:
+    bool isValid(int lim, vector<vector<int>>&safeness)
+    {
+        if(safeness[0][0]<lim) return false;
+        queue<pair<int, int>> bfs;
+        bfs.push({0,0});
+        
+        int n=safeness.size();
+        
+        vector<vector<bool>>vis(n, vector<bool>(n,false));
+        vis[0][0]=true;
+        
+        while(!bfs.empty())
+        {
+            pair<int,int>temp=bfs.front();
+            bfs.pop();
+            
+            int row=temp.first;
+            int col=temp.second;
+            
+            //if I am able to reach last cell it means there is a path
+            if(row==n-1 and col==n-1) return true;
+            
+            //I can go down if not visited and safeness atleast lim
+            if((row+1)<n)
+            {
+                if(vis[row+1][col] == false and safeness[row+1][col] >= lim)
+                {
+                    vis[row+1][col] = 1;
+                    bfs.push({row+1,col});
+                }
+            }
+            
+            //I can go right if not visited and safeness atleast lim
+            if((col+1)<n)
+            {
+                if(vis[row][col+1] == false and safeness[row][col+1] >= lim)
+                {
+                    vis[row][col+1] = 1;
+                    bfs.push({row,col+1});
+                }
+            }
+            
+            //I can go up if not visited and safeness atleast lim
+            if((row-1)>=0)
+            {
+                if(vis[row-1][col] == 0 and safeness[row-1][col] >= lim )
+                {
+                    vis[row-1][col] =  1;
+                    bfs.push({row-1,col});
+                }
+            }
+            
+            //I can go left if not visited and safeness atleast lim
+             if((col-1)>=0)
+             {
+                if(vis[row][col-1] == 0 and safeness[row][col-1] >= lim)
+                {
+                    vis[row][col-1] = 1;
+                    bfs.push({row,col-1});
+                }
+            }
+        }
+        return false;
+    }
+    int maximumSafenessFactor(vector<vector<int>>& grid) 
+    {
+        int n=grid.size();
+        vector<vector<int>>safeness(n, vector<int>(n, INT_MAX)); //creating a 2d grid for safeness of every cell
+        
+        queue<pair<pair<int, int>,int>> bfs;
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    bfs.push({{i,j},0}); //we will start from every thief cell
+                    safeness[i][j]=0;
+                }
+            }
+        }
+        
+        int maxi=0;
+        while(!bfs.empty())
+        {
+            pair<pair<int,int>,int> temp=bfs.front();
+            bfs.pop();
+            
+            int row=temp.first.first;
+            int col=temp.first.second;
+            int val=temp.second;
+            
+            maxi=max(maxi, val);
+            
+            //I can go to down cell if the safeness there is > than val
+            if(row+1<n)
+            {
+                if(safeness[row+1][col]>val+1)
+                {
+                    safeness[row+1][col]=val+1;
+                    bfs.push({{row+1,col},val+1});
+                }
+            }
+            
+            //I can go to right cell if the safeness there is > than val
+            if(col+1<n)
+            {
+                if(safeness[row][col+1]>val+1)
+                {
+                    safeness[row][col+1]=val+1;
+                    bfs.push({{row,col+1},val+1});
+                }
+            }
+            
+            //I can go to up cell if the safeness there is > than val
+            if(row-1>=0)
+            {
+                if(safeness[row-1][col]>val+1)
+                {
+                    safeness[row-1][col]=val+1;
+                    bfs.push({{row-1,col},val+1});
+                }
+            }
+            
+            //I can go to left cell if the safeness there is > than val
+            if(col-1>=0)
+            {
+                if(safeness[row][col-1]>val+1)
+                {
+                    safeness[row][col-1]=val+1;
+                    bfs.push({{row,col-1},val+1});
+                }
+            }
+        }
+        
+        int low=0, high=maxi;
+        int ans=0; //I can do a binary search on value
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(isValid(mid, safeness))  //Check if mid can be the safeness factor or not 
+            {
+                ans=mid;
+                low=mid+1;
+            }
+            else
+            {
+                high=mid-1;
+            }
+        }
+        
+        return ans;
+    }
+};

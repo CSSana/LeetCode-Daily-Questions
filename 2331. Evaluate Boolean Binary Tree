@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool evaluateTree(TreeNode* root) 
+    {
+        if(root==NULL)
+            return true;
+        
+        evaluateTree(root->left);
+        evaluateTree(root->right);
+        
+        if(root->left!=NULL and root->right!=NULL)
+        {
+            if(root->val==2)
+            {
+                root->val=(root->left->val or root->right->val);
+            }
+            else
+            {
+                root->val=(root->left->val and root->right->val);
+            }
+        }
+        return root->val;
+    }
+};
+
+// Time Complexity :- BigO(N), there were N nodes, it took O(N) time.
+
+// Space Complexity :- BigO(logN), we use recursion (a kind of loop where a function calls itself) to go through the tree. In the worst case it could be BigO(N) too

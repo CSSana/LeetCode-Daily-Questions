@@ -1,0 +1,60 @@
+//TC : O(2^n) where n is the size of the array
+//SC : O(n) 
+
+class Solution {
+public:
+    int sum=0;
+    void f(vector<int>&nums, int n, vector<int>&memo, int ind)
+    {
+        if(ind==n)
+        {
+            int x=0;
+            for(auto &it: memo)
+            {
+                x^=it;
+            }
+            sum+=x;
+            return;
+        }
+        
+        f(nums,n,memo,ind+1);
+        memo.push_back(nums[ind]);
+        f(nums,n,memo,ind+1);
+        memo.pop_back();
+        return;
+    }
+    int subsetXORSum(vector<int>& nums) 
+    {
+        int n=nums.size();
+        vector<int>memo;
+        f(nums, n, memo, 0);
+        return sum;
+    }
+};
+
+// Optimized Approach
+// I felt that the transition from Approach 2 to 1 is not crystal clear so I tried to come up with a detailed explanation.
+// From approach 2, I can conclude that in all subsets of an n-number array, each number appears exactly 2 << (n-1) times, but that does not lead to the conclusion that each bit appears 2 << (n-1) times, at least directly. My point is that we still need to prove this observation.
+// Without loss of generality, let's focus on the i-th bit of all elements. We can suppose x of them are 1 and y of them are 0, so that x + y = n. The i-th bits of n numbers produce a sequence like this:
+
+// 1,1,1,...,1,0,0,0,...,0
+// ----------- -----------
+//     x            y
+// I want to prove that the XOR sum of any non-empty subset of this sequence is exactly 2^(x+y-1) = 2 ^(n-1) as long as x>0.
+// Since I need an odd number of 1's in a subset to produce a non-zero result, the problem reduces to what's the number of subsets with an odd number of 1's?
+// The key is that it has the same answer with its dual problem: what's the number of subsets (including the empty set) with an even number of 1's? (For a proof, please refer to this StackExchange answer: https://math.stackexchange.com/q/1338830)
+// Since there are 2^n subsets in total, the answer is clearly 2 ^(n-1).
+// The final observation is: As long as the i-th bit is set in any number of an array, that bit will be set exactly 2^(n-1) times in the subsets of the array.
+// TC : O(n), SC : O(1)
+
+class Solution {
+public:
+    int subsetXORSum(vector<int>& nums) 
+    {
+        int orTotal=0;
+        for(auto &it: nums)
+            orTotal|=it;
+        
+        return pow(2,(int)nums.size()-1)*orTotal;
+    }
+};

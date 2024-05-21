@@ -1,0 +1,26 @@
+// TC : O(2^n)
+// SC : O(n)
+class Solution {
+public:
+    vector<vector<int>>ans;
+    vector<int>path;
+    void rec(vector<int>&nums, int ind, int n)
+    {
+        if(ind==n)
+        {
+            ans.push_back(path);
+            return;
+        }
+        
+        path.push_back(nums[ind]);
+        rec(nums, ind+1, n);
+        path.pop_back();
+        rec(nums, ind+1, n);
+    }
+    vector<vector<int>> subsets(vector<int>& nums) 
+    {
+        int n=nums.size();
+        rec(nums,0,n);
+        return ans;
+    }
+};

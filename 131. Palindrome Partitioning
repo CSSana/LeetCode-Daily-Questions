@@ -1,3 +1,4 @@
+// A simple observation is every time we are just checking wheather the string is palindrome or not. So we can just precompute this to optimize the TC from 2^(n-1)*(n+n) (first n is for checking palindrome and second one is for substr) to 2^(n-1)*(n)+(n^3) for precomputation. But it will increase the space from O(n) to O(n+n^2). Precomputation 2D vector will only tell wheather from index i...j is palindrome or not.
 class Solution {
 public:
     bool isPalindrome(string s, int start, int end)
@@ -10,7 +11,7 @@ public:
         }
         return true;
     }
-    void helper(vector<vector<string>>& ans, vector<string>&path, int index, string s)
+    void helper(vector<vector<string>>& ans, vector<string>&path, int index, string s, vector<vector<bool>> &precompute)
     {
         if(index==s.size())
         {
@@ -20,10 +21,10 @@ public:
         
         for(int i=index;i<s.size();i++)
         {
-            if(isPalindrome(s,index, i))
+            if(precompute[index][i])
             {
                 path.push_back(s.substr(index, i-index+1));
-                helper(ans, path, i+1, s);
+                helper(ans, path, i+1, s, precompute);
                 path.pop_back();
             }
         }
@@ -32,7 +33,19 @@ public:
     {
         vector<vector<string>> ans;
         vector<string> path;
-        helper(ans, path, 0, s);
+        
+        int n=s.size();
+        vector<vector<bool>> precompute(n,vector<bool>(n,0));
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i;j<n;j++)
+            {
+                if(isPalindrome(s,i,j))
+                    precompute[i][j]=1;
+            }
+        }
+        
+        helper(ans, path, 0, s, precompute);
         return ans;
     }
 };

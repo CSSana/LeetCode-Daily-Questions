@@ -1,0 +1,26 @@
+// TC : O(2^n) for each position there is always a take and not take situation 
+// SC : O(n+n) for map and recursion depth space
+class Solution {
+public:
+    unordered_map<int,int>mp;
+    int rec(vector<int>&nums, int ind, int k)
+    {
+        if(ind==(int)nums.size())
+            return 1;
+        
+        int ans=0;
+        ans+=rec(nums,ind+1,k); //Not Take
+        if(!mp[nums[ind]-k] && !mp[nums[ind]+k]) //Take
+        {
+            mp[nums[ind]]++;
+            ans+=rec(nums,ind+1,k);
+            mp[nums[ind]]--;
+        }
+        
+        return ans;
+    }
+    int beautifulSubsets(vector<int>& nums, int k) 
+    {
+        return rec(nums,0,k)-1;// -1 for Empty subset
+    }
+};

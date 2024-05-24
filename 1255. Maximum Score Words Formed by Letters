@@ -1,0 +1,55 @@
+//TC: O(2^n+len) where len is the length of the individual strings
+//SC: O(n+26) n because of the recursion stack depth
+class Solution {
+public:
+    int ans=0;
+    unordered_map<char,int>freq;
+    bool isValid(vector<string>&words, int ind, unordered_map<char,int>path)
+    {
+        for(auto &it: words[ind])
+        {
+            path[it]++;
+            if(freq[it]<path[it])
+                return false;
+        }
+        return true;
+    }
+    void rec(vector<string>&words, int ind, unordered_map<char,int>&path, vector<int>& score)
+    {
+        if(ind==(int)words.size())
+        {
+            int temp=0;
+            for(auto &it: path)
+            {
+                temp+=score[it.first-'a']*it.second;
+            }
+            ans=max(ans,temp);
+            return;
+        }
+
+        rec(words, ind+1, path, score);
+
+        if(isValid(words,ind,path))
+        {
+            for(auto &it: words[ind])
+            {
+                path[it]++;
+            }
+            rec(words, ind+1, path, score);
+            for(auto &it: words[ind])
+            {
+                path[it]--;
+            }
+        }
+        return;
+    }
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) 
+    {
+        for(auto &it: letters)
+            freq[it]++;
+
+        unordered_map<char,int>path;
+        rec(words,0,path,score);
+        return ans;
+    }
+};

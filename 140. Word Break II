@@ -1,0 +1,43 @@
+// TC : O(2^n)
+// SC : O(n)
+class Solution {
+public:
+    vector<string>ans;
+    void rec(string &s, unordered_map<string,int>& mp, vector<string>& path, int ind)
+    {
+        if(ind>=(int)s.size())
+        {
+            string temp="";
+            for(auto &it: path)
+            {
+                temp+=it;
+                temp+=" ";
+            }
+            temp.pop_back();
+            ans.push_back(temp);
+            return;
+        }
+
+        string s1="";
+        for(int i=ind;i<(int)s.size();i++)
+        {
+            s1+=s[i];
+            if(mp.count(s1))
+            {
+                path.push_back(s1);
+                rec(s, mp, path, i+1);
+                path.pop_back();
+            }
+        }
+    }
+    vector<string> wordBreak(string s, vector<string>& wordDict) 
+    {
+        vector<string>path;
+        unordered_map<string,int>mp;
+        for(auto &it: wordDict)
+            mp[it]=1;
+
+        rec(s, mp, path, 0);
+        return ans;
+    }
+};

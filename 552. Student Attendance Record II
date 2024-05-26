@@ -1,0 +1,41 @@
+// TC : O(n*2*3)
+// SC : O(n*2*3)
+class Solution {
+public:
+    int mod=1e9+7;
+    long long dp[100005][3][4];
+    int f(int n, int absent, int late)
+    {
+        if(n==0)
+            return 1;
+
+        if(dp[n][absent][late]!=-1)
+            return dp[n][absent][late];
+
+        long long ans=0;
+        ans=(ans+f(n-1,absent,0))%mod; // Present case
+
+        if(absent<1)
+            ans=(ans+f(n-1,absent+1,0))%mod; // Absent case
+
+        if(late<2)
+            ans=(ans+f(n-1,absent,late+1))%mod; // Late case
+
+        return dp[n][absent][late]=ans%mod;
+    }
+    int checkRecord(int n) 
+    {
+        for(int i=0;i<100005;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                for(int k=0;k<4;k++)
+                {
+                    dp[i][j][k]=-1;
+                }
+            }
+        }
+
+        return f(n, 0, 0);
+    }
+};

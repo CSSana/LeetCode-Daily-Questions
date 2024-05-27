@@ -1,0 +1,25 @@
+// TC : O(n) , SC : O(n)
+// So the idea is to first implement a bucket of size n becoz ans can be max n. And then count the freqs on each element and where it matches with the index then that will be the ans else return -1
+class Solution {
+public:
+    int specialArray(vector<int>& nums)
+    {
+        int n=nums.size();
+        vector<int>freq(n+1,0);
+
+        for(auto &it: nums)
+        {
+            freq[min(it,n)]++;
+        }
+
+        int cnt=0;
+        for(int i=n;i>=1;i--)
+        {
+            cnt+=freq[i];
+            if(cnt==i)
+                return i;
+        }
+
+        return -1;
+    }
+};

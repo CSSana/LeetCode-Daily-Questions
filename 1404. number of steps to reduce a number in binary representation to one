@@ -1,0 +1,40 @@
+// Approach
+// Initialize steps to 0 and carry to 0.
+// Iterate through the binary string from the least significant bit (rightmost bit) to the second most significant bit (leftwards).
+// For each bit, check if the bit plus the carry equals 1:
+// If it equals 1, it means the bit was 0 and we added 1 (carry was 1) or the bit was 1 and no carry:
+// Increment steps by 2 (one step for the addition, and one for the division).
+// Set carry to 1 because adding 1 to an odd number results in an even number with a carry.
+// Otherwise, just increment steps by 1 because we simply divided an even number by 2.
+// After the loop, add the carry to steps to account for any remaining carry at the end.
+// Return the total number of steps.
+// Complexity
+
+// Time complexity: (O(n))
+// We iterate through the binary string once, where (n) is the length of the string.
+
+// Space complexity: (O(1))
+// We use a constant amount of space for variables steps and carry.
+class Solution {
+public:
+    int numSteps(string s) 
+    {
+        int steps=0, carry=0;
+        int n=s.size();
+        int ans=0;
+        for(int i=n-1;i>=1;i--)
+        {
+            if((s[i]-'0'+carry)%2==1)
+            {
+                ans+=2;
+                carry=1;
+            }
+            else
+            {
+                ans+=1;
+            }
+        }
+
+        return ans+carry;
+    }
+};

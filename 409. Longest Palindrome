@@ -1,0 +1,28 @@
+// TC : O(n) , SC : O(26+26)
+class Solution {
+public:
+    int longestPalindrome(string s) 
+    {
+        int n=s.size();
+        map<char,int>mp;
+
+        for(auto &it: s)
+            mp[it]++;
+
+        int isOdd=0, ans=0;
+        for(auto &[c,freq]: mp)
+        {
+            if(freq%2==0)
+            {
+                ans+=freq;
+            }
+            else
+            {
+                ans+=(freq-1);
+                isOdd=1;
+            }
+        }
+
+        return ans+isOdd;
+    }
+};

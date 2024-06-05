@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) 
+    {
+        map<char,int>mp;
+        int n=words.size();
+
+        for(int i=0;i<words[0].size();i++)
+            mp[words[0][i]]++;
+
+        for(int i=1;i<n;i++)
+        {
+            map<char,int>freq;
+            for(int j=0;j<words[i].size();j++)
+                freq[words[i][j]]++;
+
+            for(auto &it: mp)
+            {
+                if(freq.count(it.first))
+                {
+                    it.second=min(freq[it.first],it.second);
+                }
+                else
+                {
+                    it.second=0;
+                }
+            }
+        }
+
+        vector<string> ans;
+
+        for(auto &it: mp)
+        {
+            // cout<<it.first<<" "<<it.second<<"\n";
+            int cnt=it.second;
+            string temp=""; // Char to string conversion
+            temp+=it.first;
+            while(cnt--)
+            {
+                ans.push_back(temp);
+            }
+        }
+        return ans;
+    }
+};

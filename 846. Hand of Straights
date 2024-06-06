@@ -1,0 +1,27 @@
+// TC : O(nlogn) for map operations
+// SC : O(n)
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) 
+    {
+        if(hand.size()%groupSize!=0) return false; // Not divisible by group size so not possible
+        map<int,int>mp;
+
+        for(auto it: hand)
+            mp[it]++;
+
+        for(auto [v,freq]: mp)
+        {
+            if(freq==0) continue; // freq==0 so no elements left so try for next elemnt
+            while(freq--)
+            {
+                for(int i=v;i<(v+groupSize);i++)
+                {
+                    if(mp[i]==0) return false; // f at any time element not present then cant possible to make such group
+                    mp[i]--;
+                }
+            }
+        }
+        return true;
+    }
+};

@@ -1,0 +1,43 @@
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) 
+    {
+        unordered_map<string,int>dict;
+        for(auto it: dictionary)
+        {
+            dict[it]++;
+        }
+
+        string ans="";
+        
+        int n=sentence.size();
+
+        for(int i=0;i<n;i++)
+        {
+            string temp="";
+            bool flag=false;
+            while(sentence[i]>='a' && sentence[i]<='z')
+            {
+                temp+=sentence[i];
+                if(dict[temp])
+                {
+                    flag=true;
+                    ans+=temp;
+                    ans+=" ";
+                    while(i+1<n && sentence[i]>='a' && sentence[i]<='z')
+                        i++;
+                    break;
+                }
+                i++;
+            }
+            if(flag==false)
+            {
+                ans+=temp;
+                ans+=" ";
+                flag=true;
+            }
+        }
+        ans.pop_back();
+        return ans;
+    }
+};

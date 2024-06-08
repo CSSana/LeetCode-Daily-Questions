@@ -1,0 +1,32 @@
+// Appraoch
+// suppose pb-pa=r where pb is the sum of b len subarray and pa is length of a length subarray
+// now, (pb-pa)%k=r%k=0
+// i.e pb%k=pa%k
+
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) 
+    {
+        unordered_map<int,int>mp; // To store the first occurances of every mod value
+        int n=nums.size();
+        int prefSum=0;
+        mp[prefSum]=0; // If anytime subarray sum becomes 0 then that means the length is a possible ans
+
+        for(int i=0;i<n;i++)
+        {
+            prefSum=(prefSum+nums[i])%k; 
+            cout<<prefSum<<" ";
+            if(mp.find(prefSum)!=mp.end())
+            {
+                int len=(i-mp[prefSum]+1);
+                if(len>=2) return true;
+            }
+            else
+            {
+                mp[prefSum]=i+1; // Making 1 index as 0 is stored in index 0
+            }
+        }
+
+        return false;
+    }
+};

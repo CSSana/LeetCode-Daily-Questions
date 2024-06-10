@@ -1,16 +1,22 @@
+// Trivial prefix value approach 
+// suppose pb-pa=r where pb is the sum of b len subarray and pa is length of a length subarray
+// now, (pb-pa)%k=r%k=0
+// i.e pb%k=pa%k
 class Solution {
 public:
-    int subarraysDivByK(vector<int>& nums, int k) {
-        int n = nums.size();
-        vector<int> sums(k, 0);
-        sums[0]++;
-        int cnt = 0;
-        int currSum = 0;
-        for(int i = 0; i<n; i++) {
-            currSum = (currSum + nums[i]%k + k)%k;
-            cnt += sums[currSum];
-            sums[currSum]++;
+    int subarraysDivByK(vector<int>& nums, int k) 
+    {
+        unordered_map<int,int>mp; 
+        int n=nums.size(), pref=0, ans=0;
+        mp[0]=1;
+
+        for(int i=0;i<n;i++)
+        {
+            pref=(pref+nums[i]%k+k)%k; // storing prefix value%k as value can be negative also
+            ans+=mp[pref]; // adding the prev number of freqs as curr number can contribute prev no of answers
+            mp[pref]++; // freq++ as to store the %k values
         }
-        return cnt;
+
+        return ans;
     }
 };

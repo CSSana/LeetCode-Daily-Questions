@@ -1,0 +1,29 @@
+// Counting sort
+// TC : O(n+k)
+// SC : O(k)
+class Solution {
+public:
+    int heightChecker(vector<int>& heights) 
+    {
+        vector<int>count(101,0);
+        for(auto h:heights)
+            count[h]++;
+
+        int ans=0, id=1;
+        for(auto h:heights)
+        {
+            while(count[id]==0)
+                id++;
+            if(id==h)
+            {
+                count[id]--;
+            }
+            else
+            {
+                ans++;
+                count[id]--;
+            }
+        }
+        return ans;
+    }
+};

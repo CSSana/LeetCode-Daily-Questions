@@ -12,15 +12,15 @@ public:
         int ans=0, id=1;
         for(auto h:heights)
         {
-            while(count[id]==0)
+            while(count[id]==0) // Ignoring 0 freq elements
                 id++;
-            if(id==h)
+            if(id==h) // If the element is same with the position then just do freq--
             {
                 count[id]--;
             }
             else
             {
-                ans++;
+                ans++; // else ans++ and freq-- as the position incremented
                 count[id]--;
             }
         }

@@ -1,0 +1,29 @@
+// TC : O(n)
+// SC : O(1)
+
+// Approach : 3 pointers technique where id is the pointer which will take care current elements both 0s and 1s, low is for 0s and high is for 1s.
+class Solution {
+public:
+    void sortColors(vector<int>& nums) 
+    {
+        int low=0, id=0, high=nums.size()-1;
+        while(id<=high)
+        {
+            if(nums[id]==0)
+            {
+                swap(nums[id],nums[low]);
+                id++;
+                low++;
+            }
+            else if(nums[id]==2)
+            {
+                swap(nums[id],nums[high]);
+                high--;
+            }
+            else
+            {
+                id++;
+            }
+        }
+    }
+};

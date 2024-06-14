@@ -1,0 +1,28 @@
+// Simple counting sort. Think frequencies as ball so extra balls have to move forward as max allowed ball per position is 1
+// TC : O(n+k) where k is the max elem
+// SC : O(n+k)
+class Solution {
+public:
+    int minIncrementForUnique(vector<int>& nums) 
+    {
+        int n=nums.size();
+        vector<int>freq(*max_element(nums.begin(),nums.end())+1+n); // max elem+n+1 as we have to forward the freqs
+        
+        for(auto x: nums)
+            freq[x]++;
+        
+        int sz=freq.size(), ans=0;
+        
+        for(int i=0;i<sz;i++)
+        {
+            if(freq[i]<=1)
+                continue;
+            
+            int extra=freq[i]-1; // Calculating extra balls in curr pos
+            freq[i+1]+=extra; // Adding those balls to next pos
+            ans+=extra; 
+        }
+        
+        return ans;
+    }
+};

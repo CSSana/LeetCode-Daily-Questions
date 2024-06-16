@@ -1,0 +1,26 @@
+// TC : O(n+logn)
+// SC : O(1)
+class Solution {
+public:
+    int minPatches(vector<int>& nums, int n) 
+    {
+        int minNoPatches=0, i=0, sz=(int)nums.size();
+        long long maxPossibleSum=0;
+        
+        while(maxPossibleSum<n) // logn as we can add max logn no of patches
+        {
+            if(i<sz && maxPossibleSum+1>=nums[i])
+            {
+                maxPossibleSum+=nums[i];
+                i++;
+            }
+            else
+            {
+                minNoPatches++;
+                maxPossibleSum+=(maxPossibleSum+1);
+            }
+        }
+        
+        return minNoPatches;
+    }
+};

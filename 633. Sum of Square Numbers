@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        int n=sqrt(c);
+        long long low=0,high=n;
+        
+        while(low<=high)
+        {
+            long long x=(low*low)*1LL, y=(high*high)*1LL;
+            long long ch=(x+y);
+            if(ch==c)
+                return true;
+            else if(ch>c)
+            {
+                high--;
+            }
+            else
+            {
+                low++;
+            }
+        }
+        return false;
+    }
+};

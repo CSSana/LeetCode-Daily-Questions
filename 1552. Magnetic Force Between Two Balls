@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool isValid(vector<int>& position, int m, int possible)
+    {
+        int countBalls=1, prevPos=0, n=position.size();
+        for(int i=1;i<n;i++)
+        {
+            if(abs(position[i]-position[prevPos])>=possible)
+            {
+                countBalls++;
+                prevPos=i;
+            }
+        }
+        return (countBalls>=m);
+    }
+    int maxDistance(vector<int>& position, int m) {
+        sort(position.begin(),position.end());
+        int mini=position[0];
+        int maxi=position[position.size()-1];
+        int low=1, high=maxi-mini, ans=-1;
+        
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(isValid(position,m,mid))
+            {
+                ans=mid;
+                low=mid+1;
+            }
+            else
+            {
+                high=mid-1;
+            }
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,22 @@
+// pref+?=k
+// pref-k=?
+
+// Approach : nice subarrays means subarrays containing k odd numbers. So if we convert the array into binary array such that odd number will be treated as 1 and even will be treated as 0. Then this question will be bolis down to count subarray sum equals to k
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) 
+    {
+        int n=nums.size(), pref=0, ans=0;
+        unordered_map<int,int>mp;
+        mp[0]=1;
+        
+        for(int i=0;i<n;i++)
+        {
+            pref+=(nums[i]%2)?1:0;
+            ans+=mp[pref-k];
+            mp[pref]++;
+        }
+        
+        return ans;
+    }
+};

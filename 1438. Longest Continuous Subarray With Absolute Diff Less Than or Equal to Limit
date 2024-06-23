@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) 
+    {
+        int i=0, j=0, n=nums.size(), ans=0;
+        multiset<int>s;
+        
+        while(j<n)
+        {
+            s.insert(nums[j]);
+            int diff=*s.rbegin()-*s.begin();
+            while(i<n && diff>limit)
+            {
+                auto it=s.find(nums[i]);
+                s.erase(it);
+                diff=*s.rbegin()-*s.begin();
+                i++;
+            }
+            j++;
+            ans=max(ans,(int)s.size());
+        }
+        
+        return ans;
+    }
+};

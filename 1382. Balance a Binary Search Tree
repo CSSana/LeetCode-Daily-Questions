@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<TreeNode*> inorder;
+    
+    void Inorder(TreeNode* root)
+    {
+        if(root==NULL) return;
+        Inorder(root->left);
+        inorder.push_back(root);
+        Inorder(root->right);
+    }
+    
+    TreeNode* buildTree(int low, int high)
+    {
+        if(low>high) return NULL;
+        int mid=(low+high)/2;
+        TreeNode* root=inorder[mid];
+        root->left=buildTree(low,mid-1);
+        root->right=buildTree(mid+1,high);
+        return root;
+    }
+    
+    TreeNode* balanceBST(TreeNode* root) 
+    {
+        if(root==NULL) return NULL;
+        
+        Inorder(root);
+        int n=inorder.size()-1;
+        
+        return buildTree(0,n);
+    }
+};

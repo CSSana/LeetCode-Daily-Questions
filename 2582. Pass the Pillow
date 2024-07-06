@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int passThePillow(int n, int time) 
+    {
+        int hops=time/(n-1);
+        int steps=time%(n-1);
+        
+        if(hops%2==0)
+            return 1+steps;
+        else
+            return n-steps;
+    }
+};

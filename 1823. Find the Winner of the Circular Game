@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int helper(vector<int>&v, int k, int i)
+    {
+        if(v.size()==1)
+            return v[0];
+        
+        int index=(i+k)%(int)v.size();
+        v.erase(v.begin()+index);
+        return helper(v,k,index);
+    }
+    int findTheWinner(int n, int k) 
+    {
+        k--;
+        vector<int>v;
+        for(int i=1;i<=n;i++)
+            v.push_back(i);
+        
+        return helper(v,k,0);
+    }
+};

@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minOperations(vector<string>& logs) 
+    {
+        int currFolderAt=0;
+        for(auto &it: logs)
+        {
+            if(it=="../")
+            {
+                if(currFolderAt>=1)
+                    currFolderAt--;
+            }
+            else if(it=="./")
+            {
+                continue;
+            }
+            else
+            {
+                currFolderAt++;
+            }
+        }
+        return currFolderAt;
+    }
+};

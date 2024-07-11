@@ -1,0 +1,76 @@
+class Solution {
+public:
+    string reverseParentheses(string s)
+    {
+//         stack<char>st;
+//         for(auto it: s)
+//         {
+//             if(it==')')
+//             {
+//                 string temp="";
+//                 while(st.size() and st.top()!='(')
+//                 {
+//                     temp+=st.top();
+//                     st.pop();
+//                 }
+//                 st.pop();
+//                 for(auto x: temp)
+//                     st.push(x);
+//             }
+//             else
+//             {
+//                 st.push(it);
+//             }
+//         }
+        
+//         string ans="";
+//         while(st.size())
+//         {
+//             ans+=st.top();
+//             st.pop();
+//         }
+        
+//         reverse(ans.begin(),ans.end());
+        
+//         return ans;
+        
+        stack<int>st;
+        int n=s.size();
+        vector<int>opponentIndex(n,-1);
+        
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]=='(')
+            {
+                st.push(i);
+            }
+            else if(s[i]==')')
+            {
+                opponentIndex[i]=st.top();
+                opponentIndex[st.top()]=i;
+                st.pop();
+            }
+        }
+        
+        /*
+        Wormhole Teleportation O(n) TC and O(n) SC
+        */
+        
+        int direction=1;
+        string ans="";
+        for(int i=0;i<n;i+=direction)
+        {
+            if(s[i]=='(' or s[i]==')')
+            {
+                i=opponentIndex[i]; 
+                direction*=-1;
+            }
+            else
+            {
+                ans+=s[i];
+            }
+        }
+        
+        return ans;
+    }
+};

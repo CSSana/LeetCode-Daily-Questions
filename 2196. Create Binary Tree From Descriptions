@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* createBinaryTree(vector<vector<int>>& descriptions) 
+    {
+        unordered_map<int,TreeNode*>mp;  //to check if node alredy exist
+        unordered_map<int,bool>hasParent;  //to check if node has parent or not
+        
+        for(auto it: descriptions)
+        {
+            int parent=it[0], child=it[1], isLeft=it[2];
+            TreeNode* par=NULL;
+            TreeNode* ch=NULL;
+            
+            if(!mp.count(parent))
+            {
+                par=new TreeNode(parent);
+                mp[parent]=par;
+            }
+            
+            if(!mp.count(child))
+            {
+                ch=new TreeNode(child);
+                mp[child]=ch;
+            }
+            
+            if(isLeft)
+                mp[parent]->left=mp[child];
+            else
+                mp[parent]->right=mp[child];
+            
+            hasParent[child]=1;
+        }
+        
+        TreeNode* root=nullptr;
+        for(auto it: descriptions)
+        {
+            if(!hasParent.count(it[0]))  //if node has no parent then this is root node
+            {
+                root=mp[it[0]];
+                break;
+            }
+        }
+        
+        return root;
+    }
+};

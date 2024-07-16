@@ -1,0 +1,58 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lca(TreeNode* root, int p, int q)
+    {
+        if(root==NULL)
+            return root;
+        
+        TreeNode* leftSide=lca(root->left, p, q);
+        TreeNode* rightSide=lca(root->right, p, q);
+        
+        if((leftSide and rightSide) or (root->val==p or root->val==q))
+            return root;
+        
+        return (rightSide==NULL)?leftSide:rightSide;
+    }
+    
+    string lcaToStart, lcaToEnd; // lca to start and lca to end strings
+    void dfs(TreeNode* node, string &path, int p, int q)
+    {
+        if(node==NULL)
+            return;
+        
+        if(node->val==p) lcaToStart=path;
+        if(node->val==q) lcaToEnd=path;
+        
+        path+='L';
+        dfs(node->left, path, p, q);
+        path.pop_back();
+        
+        path+='R';
+        dfs(node->right, path, p, q);
+        path.pop_back();
+    }
+    
+    string getDirections(TreeNode* root, int startValue, int destValue) 
+    {
+        TreeNode* lcaNode=lca(root, startValue, destValue); // Find the lca
+        string path=""; 
+        
+        dfs(lcaNode, path, startValue, destValue);
+        
+        for(auto &it: lcaToStart) // From lca to start will be U everytime
+            it='U';
+        
+        return lcaToStart+lcaToEnd;
+    }
+};

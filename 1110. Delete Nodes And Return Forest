@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*>ans;
+    void dfs(TreeNode* root, unordered_set<int>&st, bool isRoot)
+    {
+        if(root==NULL)
+            return;
+        
+        if(st.count(root->val))
+        {
+            dfs(root->left, st, true);
+            dfs(root->right, st, true);
+        }
+        else
+        {
+            if(isRoot)
+                ans.push_back(root);
+            
+            TreeNode* leftNode=root->left;
+            TreeNode* rightNode=root->right;
+            
+            if(root->left)
+            {
+                if(st.count(root->left->val))
+                    root->left=NULL;
+            }
+            
+            if(root->right)
+            {
+                if(st.count(root->right->val))
+                    root->right=NULL;
+            }
+            
+            dfs(leftNode, st, false);
+            dfs(rightNode, st, false);
+        }
+    }
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) 
+    {
+        unordered_set<int>st(to_delete.begin(),to_delete.end());
+        dfs(root,st,true);
+        return ans;
+    }
+};

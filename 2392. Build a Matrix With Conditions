@@ -1,0 +1,86 @@
+class Solution
+{
+public:
+    vector<vector<int>> helper(int k, vector<vector<int>>&row, vector<vector<int>>&col)
+    {
+        vector<int> rowIndex(501,0);
+        vector<int> colIndex(501,0);
+        
+        int n=row.size();
+        int m=col.size();
+        
+        vector<vector<int>>rg(k+1),cg(k+1);
+        
+        for(int i=0;i<m;i++)
+        {
+            colIndex[col[i][1]]++;
+            cg[col[i][0]].push_back(col[i][1]);
+        }
+        for(int i=0;i<n;i++)
+        {
+            rowIndex[row[i][1]]++;
+            rg[row[i][0]].push_back(row[i][1]);
+        }
+        
+        queue<int>cq,rq;
+        for (int i=1;i<=k;i++)
+        {
+            if(colIndex[i]==0)
+                cq.push(i);
+            if(rowIndex[i]==0)
+                rq.push(i);
+        }
+        
+        vector<int>rows(k+1),cols(k+1);
+        int cnt=0;
+        while(cq.size())
+        {
+            int i=cq.front();
+            cq.pop();
+            cols[i]=cnt++;
+            for(auto j=cg[i].begin();j!=cg[i].end();j++)
+            {
+                --colIndex[*j];
+                if(colIndex[*j]==0)
+                {
+                    cq.push(*j);
+                }
+            }
+        }
+        
+        if(cnt!=k)
+            return vector<vector<int>>();
+        cnt=0;
+        while(rq.size())
+        {
+            int i=rq.front();
+            rq.pop();
+            rows[i]=cnt++;
+            for(auto j=rg[i].begin();j!=rg[i].end();j++)
+            {
+                --rowIndex[*j];
+                if(rowIndex[*j]==0)
+                {
+                    rq.push(*j);
+                }
+            }
+        }
+        
+        if(cnt!=k)
+            return vector<vector<int>>();
+        
+        vector<vector<int>>res(k,vector<int>(k,0));
+        for (int i=1;i<=k;i++)
+        {
+            res[rows[i]][cols[i]]=i;
+        }
+        
+        return res;
+    }
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>&row, vector<vector<int>>&col)
+    {
+        vector<vector<int>> ans;
+        ans=helper(k,row,col);
+        return ans;
+    }
+};
